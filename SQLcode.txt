@@ -1,0 +1,5 @@
+// 1. update salaries
+UPDATE Owners
+SET salary=x
+WHERE name=
+
