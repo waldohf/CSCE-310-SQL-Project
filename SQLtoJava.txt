@@ -1,15 +1,15 @@
-// 1. update salaries
+// **** 1. update salaries ****
 ResultSet rs1 = Stmt.executeQuery("SELECT name, zooName FROM Owners");
 Array workersNames = rs1.getArray(1);
 Array workersZoos = rs1.getArray(2);
     // display data to gui submenu in dropdown lists
 // int newSalary = zooWindow....
-// String workerName = zooWindow....
+// String employeeName = zooWindow....
 // String zoo1 = zooWindow....
 rs1 = Stmt.executeQuery("UPDATE Owners SET salary=" + newSalary + "WHERE name LIKE " 
-    + workerName + "AND zooName LIKE " + zoo1);
+    + employeeName + "AND zooName LIKE " + zoo1);
 
-// 2. insert animal
+// **** 2. insert animal ****
     // what about species??
 rs1 = Stmt.executeQuery("SELECT class, origin, zooAt, inArea FROM Animals");
 Array classes = rs1.getArray(1);
@@ -33,7 +33,7 @@ ResultSet rs3 = Stmt.executeQuery("INSERT INTO Animals VALUES (" + maxAnimalID +
 ResultSet rs4 = Stmt.executeQuery("INSERT INTO Enclosures VALUES (" + enclosureSize + ", " + 
     animalSpecies + ", " maxAnimalID);
 
-// 3. insert worker
+// **** 3. insert worker ****
 rs1 = Stmt.executeQuery("SELECT job, workSite, shift, areaWorking FROM Workers");
     // display data to gui submenu in dropdown lists
 Array jobs = rs1.getArray(1);
@@ -44,34 +44,52 @@ rs2 = Stmt.executeQuery("SELECT MAX(employeeID) FROM Workers");
     // read into maxEmployeeID and increment by one 
     // shouldn't need to display, transparent to user
 int maxEmployeeID = rs2.getInt(1) + 1;
-// String enployeeName = zooWindow....
+// employeeName = zooWindow....
 // String employeeJob = zooWindow....
 // String employeeWorkSite = zooWindow....
 // String employeeShift = zooWindow....
 // String employeeArea = zooWindow....
-rs3 = Stmt.executeQuery("INSERT INTO Workers VALUES (" + maxEmployeeID + ", " + enployeeName + ", " + 
+rs3 = Stmt.executeQuery("INSERT INTO Workers VALUES (" + maxEmployeeID + ", " + employeeName + ", " + 
     employeeJob + ", " + employeeWorkSite + ", " + employeeShift + ", " + employeeArea);
 
-// 4. incidents
+// **** 4. incidents ****
+  // ** 4A. animal kills or seriously injures worker **
 rs1 = Stmt.executeQuery("SELECT name, employeeID FROM Workers");
+workersNames = rs1.getArray(1);
+Array workerIDs = rs1.getArray(2);
+    // display data to gui submenu in dropdown lists
+// employeeName = zooWindow....
+// int employeeID = zooWindow....
+rs4 = Stmt.executeQuery("DELETE FROM Workers WHERE name LIKE " + employeeName + " AND employeeID=" + employeeID);
+  // ** 4B. animal dies or escapes **
 rs2 = Stmt.executeQuery("SELECT species FROM Animals");
-rs3 = Stmt.executeQuery("SELECT zooName FROM Zoos");
+Array species = rs2.getArray(1);
     // display data to gui submenu in dropdown lists
-  // 4a. animal kills or seriously injures worker
-rs4 = Stmt.executeQuery("DELETE FROM Workers WHERE name LIKE " + employeeName + " AND employeeID=" + workerID);
-  // 4b. animal dies or escapes
+// animalSpecies = zooWindow....
 rs4 = Stmt.executeQuery("DELETE FROM Animals WHERE species LIKE " + animalSpecies);
-  // 4c. zoo closes
+  // ** 4C. zoo closes **
+rs3 = Stmt.executeQuery("SELECT zooName FROM Zoos");
+zoos = rs3.getArray(1);
+    // display zoos 2x
     // check that zoo1 != zoo2, if not ..
+// zoo1 = zooWindow....
+// String zoo2 = zooWindow....
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+Date dateWithoutTime = sdf.parse(sdf.format(new Date()));
 rs4 = Stmt.executeQuery("UPDATE Workers SET workSite=" + zoo2 + "WHERE workSite LIKE " + zoo1);
-UPDATE Animals SET zooAt=zoo2 WHERE zooAt LIKE zoo1
-DELETE FROM Zoos WHERE zooName LIKE zoo1
-UPDATE Owners SET endDate=todaysDate WHERE zooName LIKE zoo1
+ResultSet rs5 = Stmt.executeQuery("UPDATE Animals SET zooAt=" + zoo2 + " WHERE zooAt LIKE " + zoo1);
+ResultSet rs6 = Stmt.executeQuery("DELETE FROM Zoos WHERE zooName LIKE " + zoo1);
+ResultSet rs7 = Stmt.executeQuery("UPDATE Owners SET endDate=" + todaysDate + " WHERE zooName LIKE " + zoo1);
 
-// 5. update worker
-SELECT name, employeeID
-FROM Workers
+// **** 5. update worker ****
+rs1 = Stmt.executeQuery("SELECT name, employeeID FROM Workers");
+workersNames = rs1.getArray(1);
+workerIDs = rs1.getArray(2);
     // display data to gui submenu in dropdown lists
-UPDATE Workers
-SET job=newJob, workSite=newWorkSite, shift=newShift, areaWorking=newArea
-WHERE name LIKE workerName
+// String employeeName = zooWindow....
+// employeeJob = zooWindow....
+// employeeWorkSite = zooWindow....
+// employeeShift = zooWindow....
+// employeeArea = zooWindow....
+rs2 = Stmt.executeQuery("UPDATE Workers SET job=" + employeeJob + ", workSite=" + employeeWorkSite + 
+        ", shift=" + employeeShift + ", areaWorking=" + employeeArea + "WHERE name LIKE " + employeeName);
