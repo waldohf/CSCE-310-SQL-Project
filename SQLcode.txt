@@ -1,0 +1,68 @@
+// 1. update salaries
+SELECT name, zooName
+FROM Owners
+    // display data to gui submenu in dropdown lists
+UPDATE Owners
+SET salary=newSalary // read from text box, format is DECIMAL(10,2) so float or double
+WHERE name LIKE workerName AND zooName LIKE zoo1
+
+// 2. insert animal
+SELECT class, origin, zooAt, inArea // species as well if you don't want them to be able to add a new one
+FROM Animals
+    // display data to gui submenu in dropdown lists
+SELECT MAX(animalID)
+FROM Animals
+    // read into maxAnimalID and increment by one, either now or later
+    // shouldn't need to display, transparent to user
+INSERT INTO Animals
+VALUES ((maxAnimalID + 1), animalClass, animalSpecies, animalOrigin, animalFood, zoo1, animalArea)
+    // Enclosures only adds one other attribute - enclosureSize
+INSERT INTO Enclosures
+VALUES (enclosureSize, animalSpecies, (maxAnimalID + 1))
+
+// 3. insert worker
+SELECT job, workSite, shift, areaWorking
+FROM Workers
+    // display data to gui submenu in dropdown lists
+SELECT MAX(employeeID)
+FROM Workers
+    // read into maxEmployeeID and increment by one 
+    // shouldn't need to display, transparent to user
+INSERT INTO Workers
+VALUES ((maxEmployeeID + 1), enployeeName, employeeJob, employeeWorkSite, employeeShift, employeeArea)
+
+// 4. incidents
+SELECT name, employeeID
+FROM Workers
+SELECT species
+FROM Animals
+SELECT zooName
+FROM Zoos
+    // display data to gui submenu in dropdown lists
+  // 4a. animal kills or seriously injures worker
+DELETE FROM Workers
+WHERE name LIKE enployeeName AND employeeID=workerID
+  // 4b. animal dies or escapes
+DELETE FROM Animals
+WHERE species LIKE animalSpecies
+  // 4c. zoo closes
+    // check that zoo1 != zoo2, if not ..
+UPDATE Workers
+SET workSite LIKE zoo2
+WHERE workSite LIKE zoo1
+UPDATE Animals
+SET zooAt LIKE zoo2
+WHERE zooAt LIKE zoo1
+DELETE FROM Zoos
+WHERE zooName LIKE zoo1
+UPDATE Owners
+SET endDate=todaysDate
+WHERE zooName LIKE zoo1
+
+// 5. update worker
+SELECT name, employeeID
+FROM Workers
+    // display data to gui submenu in dropdown lists
+UPDATE Workers
+SET job=newJob, workSite=newWorkSite, shift=newShift, areaWorking=newArea
+WHERE name LIKE workerName
